@@ -318,12 +318,12 @@ contains
         LQSppl = .false.
     end subroutine filter
 
-    subroutine alfa_(a_input, cl_out, cd_out, cm_out, cp_out, conv) bind(c, name='alfa')
+    subroutine alfa_(a_input, cl_out, cd_out, cm_out, cp_out, xtrtop_out, xtrbot_out, conv) bind(c, name='alfa')
         use m_xoper, only: specal, viscal, fcpmin
         use i_xfoil
 
         real(c_float), intent(in) :: a_input
-        real(c_float), intent(out) :: cl_out, cd_out, cm_out, cp_out
+        real(c_float), intent(out) :: cl_out, cd_out, cm_out, cp_out, xtrtop_out, xtrbot_out
         logical(c_bool), intent(out) :: conv
         ADEg = a_input
 
@@ -348,14 +348,17 @@ contains
 
         call fcpmin
         cp_out = CPMn
+
+        xtrtop_out = XOCtr(1)
+        xtrbot_out = XOCtr(2)
     end subroutine alfa_
 
-    subroutine cl_(cl_input, a_out, cd_out, cm_out, cp_out, conv) bind(c, name='cl')
+    subroutine cl_(cl_input, a_out, cd_out, cm_out, cp_out, xtrtop_out, xtrbot_out, conv) bind(c, name='cl')
         use m_xoper, only: speccl, viscal, fcpmin
         use i_xfoil
 
         real(c_float), intent(in) :: cl_input
-        real(c_float), intent(out) :: a_out, cd_out, cm_out, cp_out
+        real(c_float), intent(out) :: a_out, cd_out, cm_out, cp_out, xtrtop_out, xtrbot_out
         logical(c_bool), intent(out) :: conv
 
         CLSpec = cl_input
@@ -381,6 +384,9 @@ contains
 
         call fcpmin
         cp_out = CPMn
+
+        xtrtop_out = XOCtr(1)
+        xtrbot_out = XOCtr(2)
     end subroutine cl_
 
     subroutine aseq(a_start, a_end, n_step, &
